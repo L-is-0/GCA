@@ -39,49 +39,82 @@ class MyHome extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text('Home'),
+          title: Text('GCA'),
           backgroundColor: Colors.transparent,
         ),
-        body: GridView.count(
-            primary:false,
-            padding: const EdgeInsets.all(20),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
+        body: SingleChildScrollView(
+          child: Column(
             children: <Widget>[
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/sorting'),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child:
-                    Image(image: AssetImage('assets/images/icon1.png')),
-                  color: Colors.lightGreen[900],
+              Container(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.5),
+                      child: TextField(
+                        decoration: InputDecoration(
+                            labelStyle: TextStyle(
+                              color: Colors.white
+                            ),
+                            labelText: "Search",
+                            hintText: "Search",
+                            prefixIcon: Icon(Icons.search),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(color: Colors.blue)
+                            ),
+                        ),
+                      ),
+                    ),
                 ),
               ),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/tips'),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child:
-                    Image(image: AssetImage('assets/images/icon3.png')),
-                  color: Colors.yellow[300],
-                ),
-              ),GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/square'),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Image(image: AssetImage('assets/images/icon2.png')),
-                  color: Colors.deepOrange[300],
-                ),
-              ),GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/settings'),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Image(image: AssetImage('assets/images/icon4.png')),
-                  color: Colors.teal[100],
-                ),
               ),
-            ],
+              Container(
+                height: 800,
+                child: GridView.count(
+                  primary:false,
+                  padding: const EdgeInsets.all(20),
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  crossAxisCount: 2,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/sorting'),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child:
+                        Image(image: AssetImage('assets/images/icon1.png')),
+                        color: Colors.lightGreen[900],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/tips'),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child:
+                        Image(image: AssetImage('assets/images/icon3.png')),
+                        color: Colors.yellow[300],
+                      ),
+                    ),GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/square'),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Image(image: AssetImage('assets/images/icon2.png')),
+                        color: Colors.deepOrange[300],
+                      ),
+                    ),GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/settings'),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Image(image: AssetImage('assets/images/icon4.png')),
+                        color: Colors.teal[100],
+                    ),
+                  ),
+                ],
+              ),
+              ),
+            ]
+          )
         ),
       ),
     );
