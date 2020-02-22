@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gca_app/pages/login.dart';
@@ -52,12 +53,8 @@ class MyHome extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(context, '/sorting'),
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  child: Text('Sorting',
-                      style: TextStyle(
-//                        fontWeight: FontWeight.bold,
-                  ),
-                  ),
-//                  alignment: Alignment(0.0, 0.0),
+                  child:
+                    Image(image: AssetImage('assets/images/icon1.png')),
                   color: Colors.lightGreen[900],
                 ),
               ),
@@ -65,21 +62,22 @@ class MyHome extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(context, '/tips'),
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  child: Text('Tips', style: GoogleFonts.lato()),
+                  child:
+                    Image(image: AssetImage('assets/images/icon3.png')),
                   color: Colors.yellow[300],
                 ),
               ),GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/square'),
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  child: Text('Square', style: GoogleFonts.lato()),
+                  child: Image(image: AssetImage('assets/images/icon2.png')),
                   color: Colors.deepOrange[300],
                 ),
               ),GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/settings'),
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  child: Text('Settings', style: GoogleFonts.lato()),
+                  child: Image(image: AssetImage('assets/images/icon4.png')),
                   color: Colors.teal[100],
                 ),
               ),
