@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   google_fonts: ^0.3.9
   flappy_search_bar: 1.4.1
+  getflutter: ^1.0.8
 
 dev_dependencies:
   flutter_test:

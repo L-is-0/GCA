@@ -11,7 +11,7 @@ import 'package:gca_app/pages/settings.dart';
 import 'package:gca_app/pages/sorting.dart';
 import 'package:gca_app/pages/square.dart';
 import 'package:gca_app/pages/tips.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:getflutter/getflutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -42,7 +42,8 @@ class MyHome extends StatelessWidget {
           title: Text('GCA'),
           backgroundColor: Colors.transparent,
         ),
-        body: SingleChildScrollView(
+        body: Center(
+        child :SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Container(
@@ -83,7 +84,9 @@ class MyHome extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         child:
-                        Image(image: AssetImage('assets/images/icon1.png')),
+                        Image(
+                            image: AssetImage('assets/images/icon1.png'),
+                        ),
                         color: Colors.lightGreen[900],
                       ),
                     ),
@@ -115,6 +118,23 @@ class MyHome extends StatelessWidget {
               ),
             ]
           )
+        ),
+        ),
+        drawer:
+        GFDrawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              ListTile(
+                title: Text('Item 1'),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text('Item 2'),
+                onTap: null,
+              ),
+            ],
+          ),
         ),
       ),
     );
