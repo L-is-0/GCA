@@ -1,0 +1,91 @@
+// Copyright 2018 The Flutter team. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:gca_app/pages/login.dart';
+import 'package:gca_app/pages/register.dart';
+import 'package:gca_app/pages/settings.dart';
+import 'package:gca_app/pages/sorting.dart';
+import 'package:gca_app/pages/square.dart';
+import 'package:gca_app/pages/tips.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyHome(),
+      routes: {
+        Login.id:(context) => Login(),
+        Register.id:(context) => Register(),
+        Sorting.id:(context) => Sorting(),
+        Tips.id:(context) => Tips(),
+        Square.id:(context) => Square(),
+        Settings.id:(context) => Settings(),
+      },
+    );
+  }
+}
+class MyHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to home page',
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          title: Text('Home'),
+          backgroundColor: Colors.transparent,
+        ),
+        body: GridView.count(
+            primary:false,
+            padding: const EdgeInsets.all(20),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/sorting'),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text('Sorting',
+                      style: TextStyle(
+//                        fontWeight: FontWeight.bold,
+                  ),
+                  ),
+//                  alignment: Alignment(0.0, 0.0),
+                  color: Colors.lightGreen[900],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/tips'),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text('Tips', style: GoogleFonts.lato()),
+                  color: Colors.yellow[300],
+                ),
+              ),GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/square'),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text('Square', style: GoogleFonts.lato()),
+                  color: Colors.deepOrange[300],
+                ),
+              ),GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/settings'),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text('Settings', style: GoogleFonts.lato()),
+                  color: Colors.teal[100],
+                ),
+              ),
+            ],
+        ),
+      ),
+    );
+  }
+}
