@@ -15,16 +15,39 @@ class _SortingState extends State<Sorting>{
       appBar: AppBar(
         title:Text('Sorting'),
       ),
-      body: Center(
-        child: GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/tips'),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child:
-                  Image(image: AssetImage('assets/images/tap.png')),
-                  //          color: Colors.red[400],
-                ),
-              ),
+      body: Align(
+        alignment: Alignment.center,
+         child: Column(
+           children: <Widget>[
+             Padding(
+               padding:const EdgeInsets.all(20),
+               child: Text(
+                 "Hello, Peter!",
+                 style: TextStyle(
+                     fontSize: 16
+                 ),
+               ),
+             ),
+             Padding(
+               padding:const EdgeInsets.all(10),
+               child: Text(
+                 "Let's begin your recycle!",
+                 style: TextStyle(
+                     fontSize: 16
+                 ),
+               ),
+             ),
+             GestureDetector(
+               onTap: () => Navigator.pushNamed(context, '/tips'),
+               child: Container(
+                 padding: const EdgeInsets.all(8),
+                 child:
+                 Image(image: AssetImage('assets/images/tap.png')),
+                 //          color: Colors.red[400],
+               ),
+             ),
+           ],
+        )
       ),
       floatingActionButton: SpeedDial(
         // both default to 16

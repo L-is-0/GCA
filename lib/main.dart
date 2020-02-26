@@ -55,7 +55,7 @@ class MyHome extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Padding(
-                        padding: const EdgeInsets.all(2.5),
+                        padding: const EdgeInsets.all(20),
                         child: TextField(
                           decoration: InputDecoration(
                               labelStyle: TextStyle(
