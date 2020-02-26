@@ -27,6 +27,8 @@ dependencies:
   flappy_search_bar: 1.4.1
   getflutter: ^1.0.8
   flutter_login: ^1.0.14
+  unicorndial: ^1.1.5
+  flutter_speed_dial: ^1.2.5
 
 dev_dependencies:
   flutter_test:
