@@ -76,21 +76,21 @@ class _SortingState extends State<Sorting>{
           SpeedDialChild(
               child: Icon(Icons.accessibility),
               backgroundColor: Colors.red,
-              label: 'Search Item',
+              label: 'Search an item',
               labelStyle: TextStyle(fontSize: 18.0),
               onTap: () => print('SEARCH ITEM')
           ),
           SpeedDialChild(
             child: Icon(Icons.brush),
             backgroundColor: Colors.blue,
-            label: 'Scan Barcode',
+            label: 'Scan a barcode',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () => print('SCAN BARCODE'),
           ),
           SpeedDialChild(
             child: Icon(Icons.keyboard_voice),
             backgroundColor: Colors.green,
-            label: 'Scan Item',
+            label: 'Scan an item',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () => print('SCAN ITEM'),
           ),
