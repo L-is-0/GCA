@@ -29,6 +29,7 @@ dependencies:
   flutter_login: ^1.0.14
   unicorndial: ^1.1.5
   flutter_speed_dial: ^1.2.5
+  image_picker:
 
 dev_dependencies:
   flutter_test:
