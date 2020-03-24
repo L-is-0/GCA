@@ -5,6 +5,7 @@
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gca_app/pages/imageScan.dart';
 import 'package:gca_app/pages/login.dart';
 import 'package:gca_app/pages/register.dart';
 import 'package:gca_app/pages/settings.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         Tips.id:(context) => Tips(),
         Square.id:(context) => Square(),
         Settings.id:(context) => Settings(),
+        ImageScan.id:(contenxt) => ImageScan(),
       },
     );
   }

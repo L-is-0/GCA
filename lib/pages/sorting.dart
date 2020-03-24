@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Sorting extends StatefulWidget{
   static const String id = "/sorting";
@@ -9,6 +12,16 @@ class Sorting extends StatefulWidget{
 }
 
 class _SortingState extends State<Sorting>{
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +51,14 @@ class _SortingState extends State<Sorting>{
                ),
              ),
              GestureDetector(
-               onTap: () => Navigator.pushNamed(context, '/tips'),
+//               onTap: () => Navigator.pushNamed(context, '/scan'),
                child: Container(
                  padding: const EdgeInsets.all(8),
                  child:
-                 Image(image: AssetImage('assets/images/tap.png')),
+                 _image == null
+                     ? Text('No image selected.')
+                     : Image.file(_image),
+//                 Image(image: AssetImage('assets/images/tap.png')),
                  //          color: Colors.red[400],
                ),
              ),
@@ -76,26 +92,28 @@ class _SortingState extends State<Sorting>{
           SpeedDialChild(
               child: Icon(Icons.accessibility),
               backgroundColor: Colors.red,
-              label: 'Search an item',
+              label: 'Search',
               labelStyle: TextStyle(fontSize: 18.0),
               onTap: () => print('SEARCH ITEM')
           ),
           SpeedDialChild(
             child: Icon(Icons.brush),
             backgroundColor: Colors.blue,
-            label: 'Scan a barcode',
+            label: 'Barcode',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () => print('SCAN BARCODE'),
           ),
           SpeedDialChild(
-            child: Icon(Icons.keyboard_voice),
+            child: Icon(Icons.add_a_photo),
             backgroundColor: Colors.green,
-            label: 'Scan an item',
+            label: 'Scan',
             labelStyle: TextStyle(fontSize: 18.0),
-            onTap: () => print('SCAN ITEM'),
+            onTap: () => getImage(),
           ),
         ],
       ),
     );
   }
 }
+
+
