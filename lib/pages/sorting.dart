@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+//import 'package:firebase_mlvision/firebase_mlvision.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -60,9 +62,16 @@ class _SortingState extends State<Sorting>{
     return base64Image;
   }
 
-//  Future makePostRequest(File image) async {
+  Future makePostRequest(File image) async {
+    List<int> imageBytes = image.readAsBytesSync();
+    String base64Image = base64.encode(imageBytes);
+    Map<String, String> headers = {"Accept": "application/json"};
+    Map body = {"image": base64Image};
+    var response = await http.post("http://YourVM PUBLIC IP/automl.php",
+    body: body, headers: headers);
+    print(response.body);
+
 //    var encodedimg = encodeImage(image);
-//
 //    String url = 'https://automl.googleapis.com/v1beta1/projects/639315848103/locations/us-central1/models/ICN3643161409891598336:predict';
 //    Map jsonMap =
 //    {
@@ -74,7 +83,7 @@ class _SortingState extends State<Sorting>{
 //          }
 //        }
 //    };
-//
+
 //    var body = json.encode(jsonMap);
 //    var response = await http.post(url,
 //        headers: {
@@ -83,11 +92,11 @@ class _SortingState extends State<Sorting>{
 //        },
 //        body: body
 //    );
-//
+
 //    print("${response.statusCode}");
 //    print("${response.body}");
 //    return response;
-//  }
+  }
 
   Future loadModel() async {
     try{
@@ -105,23 +114,26 @@ class _SortingState extends State<Sorting>{
   Future recognizeImageBinary(File image) async {
 //    var imageBytes = (new File(image.path)).readAsBytes().asUnit8List();
     var imageBytes = await image.readAsBytesSync();
+//    var imageBytes = (await rootBundle.load('assets/images/test.jpg')).buffer;
+
 //    var base64Image = base64Encode(imageBytes);
     var bytes = imageBytes.buffer.asUint8List();
+//    var bytes = imageBytes.buffer.asFloat32List();
 
 //    var imageBytes = (await rootBundle.load(image.path)).buffer;
-//    img.Image oriImage = img.decodeJpg(imageBytes.asUint8List());
     img.Image oriImage = img.decodeJpg(bytes);
+//    img.Image oriImage = img.decodeJpg(bytes);
     img.Image resizedImage = img.copyResize(oriImage, height: 112, width: 112);
 
     var recognitions = await Tflite.runModelOnBinary(
-//        binary: imageToByteListFloat32(resizedImage, 112, 127.5, 127.5),
-//        numResults: 6,
-//        threshold: 0.05,
-//        asynch: true
-      binary: imageToByteListUint8(resizedImage, 112),
-      numResults: 2,
-      threshold: 0.4,
-      asynch: true
+        binary: imageToByteListFloat32(resizedImage, 112, 127.5, 127.5),
+        numResults: 6,
+        threshold: 0.05,
+        asynch: true
+//      binary: imageToByteListUint8(resizedImage, 112),
+//      numResults: 2,
+//      threshold: 0.4,
+//      asynch: true
     );
     setState(() {
       _recognitions = recognitions;
@@ -149,6 +161,33 @@ class _SortingState extends State<Sorting>{
 
   }
 
+  Future imagePrediction(File image) async {
+    final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(image);
+//    FirebaseVision.instance.modelManager().setupModel('model', 'assets/models');
+
+//    final VisionEdgeImageLabeler visionEdgeLabeler = FirebaseVision.instance.visionEdgeImageLabeler('models');
+//    final List<VisionEdgeImageLabel> visionEdgeLabels = await visionEdgeLabeler.processImage(visionImage);
+
+    final ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
+    final List<ImageLabel> labels = await labeler.processImage(visionImage);
+
+    //extract labels
+    for (ImageLabel label in labels) {
+      final String text = label.text;
+      final String entityId = label.entityId;
+      final double confidence = label.confidence;
+    }
+
+    //extract text
+    labeler.close();
+
+
+    for (VisionEdgeImageLabel label in labels) {
+      final String text = label.text;
+      final double confidence = label.confidence;
+    }
+  }
+
   Uint8List imageToByteListFloat32(img.Image image, int inputSize, double mean, double std) {
     var convertedBytes = Float32List(1 * inputSize * inputSize * 3 );
     var buffer = Float32List.view(convertedBytes.buffer);
@@ -156,9 +195,9 @@ class _SortingState extends State<Sorting>{
     for (var i = 0; i < inputSize; i++) {
       for (var j = 0; j < inputSize; j++) {
         var pixel = image.getPixel(j, i);
-        buffer[pixelIndex++] = (img.getRed(pixel) - mean) / std;
-        buffer[pixelIndex++] = (img.getGreen(pixel) - mean) / std;
-        buffer[pixelIndex++] = (img.getBlue(pixel) - mean) / std;
+        buffer[pixelIndex++] = ((img.getRed(pixel) - mean) / std).toDouble();
+        buffer[pixelIndex++] = ((img.getGreen(pixel) - mean) / std).toDouble();
+        buffer[pixelIndex++] = ((img.getBlue(pixel) - mean) / std).toDouble();
       }
     }
     return convertedBytes.buffer.asUint8List();
