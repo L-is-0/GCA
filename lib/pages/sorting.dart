@@ -13,6 +13,7 @@ import 'package:tflite/tflite.dart';
 import 'package:image/image.dart' as img;
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
+import 'package:mlkit/mlkit.dart';
 
 
 
@@ -30,19 +31,26 @@ class _SortingState extends State<Sorting>{
   List _recognitions;
   String res;
   String _model = visonML;
+  Map<String, List<String>> labels = {
+    "gcp": null,
+  };
 
+  FirebaseModelInterpreter interpreter = FirebaseModelInterpreter.instance;
+  FirebaseModelManager manager = FirebaseModelManager.instance;
 
   Future getImage() async {
     loadModel();
 
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+//    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
     if (image != null) {
       setState(() {
         _image = image;
       });
 //      makePostRequest(image);
-      recognizeImageBinary(_image);
-//      predictImage(_image);
+//      recognizeImageBinary(_image);
+      predictImage(_image);
     }
 //    recognizeImageBinary(_image);
 //    await Tflite.close();
@@ -51,7 +59,6 @@ class _SortingState extends State<Sorting>{
   Future predictImage(File image) async {
     print ("debug: start to predict image");
     if (image == null) return;
-//    await autoML(image);
     await autoML(image);
   }
 
@@ -70,95 +77,111 @@ class _SortingState extends State<Sorting>{
     var response = await http.post("http://YourVM PUBLIC IP/automl.php",
     body: body, headers: headers);
     print(response.body);
-
-//    var encodedimg = encodeImage(image);
-//    String url = 'https://automl.googleapis.com/v1beta1/projects/639315848103/locations/us-central1/models/ICN3643161409891598336:predict';
-//    Map jsonMap =
-//    {
-//        "payload":
-//        {
-//          "image":
-//          {
-//            "imageBytes": "123"
-//          }
-//        }
-//    };
-
-//    var body = json.encode(jsonMap);
-//    var response = await http.post(url,
-//        headers: {
-//          "Content-Type": "application/json",
-//          'Authorization': 'Bearer $(gcloud auth application-default print-access-token)',
-//        },
-//        body: body
-//    );
-
-//    print("${response.statusCode}");
-//    print("${response.body}");
-//    return response;
   }
 
   Future loadModel() async {
     try{
-      res = await Tflite.loadModel(
-          model: "assets/models/model.tflite",
-          labels: "assets/models/dict.txt",
-      );
-      print("loading tf model...");
-      print(res);
+      //Register Local Backup
+      manager.registerLocalModelSource(FirebaseLocalModelSource(modelName: 'gcp',  assetFilePath: 'assets/models/model.tflite'));
+      rootBundle.loadString('assets/models/dict.txt').then((string) {
+        var _l = string.split('\n');
+        _l.removeLast();
+        labels["gcp"] = _l;
+      });
+
+//      res = await Tflite.loadModel(
+//          model: "assets/models/model.tflite",
+//          labels: "assets/models/dict.txt",
+//      );
+      print("TF model loaded");
     }on PlatformException{
       print ("Failed to load model");
     }
   }
 
-  Future recognizeImageBinary(File image) async {
-//    var imageBytes = (new File(image.path)).readAsBytes().asUnit8List();
-    var imageBytes = await image.readAsBytesSync();
-//    var imageBytes = (await rootBundle.load('assets/images/test.jpg')).buffer;
-
-//    var base64Image = base64Encode(imageBytes);
-    var bytes = imageBytes.buffer.asUint8List();
-//    var bytes = imageBytes.buffer.asFloat32List();
-
-//    var imageBytes = (await rootBundle.load(image.path)).buffer;
-    img.Image oriImage = img.decodeJpg(bytes);
-//    img.Image oriImage = img.decodeJpg(bytes);
-    img.Image resizedImage = img.copyResize(oriImage, height: 112, width: 112);
-
-    var recognitions = await Tflite.runModelOnBinary(
-        binary: imageToByteListFloat32(resizedImage, 112, 127.5, 127.5),
-        numResults: 6,
-        threshold: 0.05,
-        asynch: true
-//      binary: imageToByteListUint8(resizedImage, 112),
-//      numResults: 2,
-//      threshold: 0.4,
-//      asynch: true
-    );
-    setState(() {
-      _recognitions = recognitions;
+  Future<Uint8List> _readFileByte(String filePath) async {
+    Uri myUri = Uri.parse(filePath);
+    File imagefile = new File.fromUri(myUri);
+    Uint8List bytes;
+    await imagefile.readAsBytes().then((value) {
+      bytes = Uint8List.fromList(value);
+      print('reading of bytes is completed');
+    }).catchError((onError) {
+      print('Exception Error while reading audio from path:' +
+          onError.toString());
     });
+    return bytes;
   }
 
   Future autoML(File image)async {
     print ("debug: start automl");
-    var recognitions = await Tflite.runModelOnImage(
-        path: image.path,
-        numResults: 3,    // defaults to 5
-        threshold: 0.2,   // defaults to 0.1
-        asynch: true      // defaults to true
-    );
+    var imageBytes = _readFileByte(image.path);
+    img.Image oriImage = img.decodeJpg(await imageBytes);
+    img.Image resizedImage = img.copyResize(oriImage, height: 224, width: 224);
 
-    if (recognitions != null){
+    List<dynamic> results;
+    var factor = 0.01;
+
+    results = await interpreter.run(
+        localModelName: "gcp_model",
+        inputOutputOptions:
+        FirebaseModelInputOutputOptions(
+            [
+          FirebaseModelIOOption(FirebaseModelDataType.BYTE, [1, 224, 224, 3])
+        ], [
+          FirebaseModelIOOption(FirebaseModelDataType.BYTE, [1, 6])
+        ]),
+        inputBytes: imageToByteList(resizedImage));
+
+    factor = 2.55;
+
+    print ("debugging");
+    print (results);
+
+    List<ObjectDetectionLabel> currentLabels = [];
+
+    for (var i = 0; i < results[0][0].length; i++) {
+      if (results[0][0][i] > 0) {
+        currentLabels.add(new ObjectDetectionLabel(
+            labels["gcp"][i],
+            results[0][0][i] / factor));
+      }
+    }
+    
+    var label = currentLabels[0].label;
+    var cog = currentLabels[0].confidence;
+    
+    
+    if (label != null){
       setState(() {
-        _recognitions = recognitions;
+        _recognitions = [{"label is ": label, "confidence is ":cog}];
       });
     }else{
       _recognitions = [{"confidence":"0", "index":"0", "label":"null"}];
     }
-    print ("debugging");
-    print (recognitions);
 
+    print(label);
+    print(cog);
+  }
+
+  // int model
+  Uint8List imageToByteList(img.Image image) {
+    var _inputSize = 224;
+    var convertedBytes = new Uint8List(1 * _inputSize * _inputSize * 3);
+    var buffer = new ByteData.view(convertedBytes.buffer);
+    int pixelIndex = 0;
+    for (var i = 0; i < _inputSize; i++) {
+      for (var j = 0; j < _inputSize; j++) {
+        var pixel = image.getPixel(i, j);
+        buffer.setUint8(pixelIndex, (pixel >> 16) & 0xFF);
+        pixelIndex++;
+        buffer.setUint8(pixelIndex, (pixel >> 8) & 0xFF);
+        pixelIndex++;
+        buffer.setUint8(pixelIndex, (pixel) & 0xFF);
+        pixelIndex++;
+      }
+    }
+    return convertedBytes;
   }
 
   Future imagePrediction(File image) async {
@@ -182,10 +205,10 @@ class _SortingState extends State<Sorting>{
     labeler.close();
 
 
-    for (VisionEdgeImageLabel label in labels) {
-      final String text = label.text;
-      final double confidence = label.confidence;
-    }
+//    for (VisionEdgeImageLabel label in labels) {
+//      final String text = label.text;
+//      final double confidence = label.confidence;
+//    }
   }
 
   Uint8List imageToByteListFloat32(img.Image image, int inputSize, double mean, double std) {
@@ -204,18 +227,24 @@ class _SortingState extends State<Sorting>{
   }
 
   Uint8List imageToByteListUint8(img.Image image, int inputSize) {
-    var convertedBytes = Uint8List(4 * inputSize * inputSize * 3);
-    var buffer = Uint8List.view(convertedBytes.buffer);
+    var convertedBytes = new Uint8List(1 * inputSize * inputSize * 3);
+//    var buffer = Uint8List.view(convertedBytes.buffer);
+    var buffer = new ByteData.view(convertedBytes.buffer);
     int pixelIndex = 0;
     for (var i = 0; i < inputSize; i++) {
       for (var j = 0; j < inputSize; j++) {
         var pixel = image.getPixel(j, i);
-        buffer[pixelIndex++] = img.getRed(pixel);
-        buffer[pixelIndex++] = img.getGreen(pixel);
-        buffer[pixelIndex++] = img.getBlue(pixel);
+        buffer.setUint8(pixelIndex, (pixel >> 16) & 0xFF);
+        pixelIndex++;
+        buffer.setUint8(pixelIndex, (pixel >> 8) & 0xFF);
+        pixelIndex++;
+        buffer.setUint8(pixelIndex, (pixel) & 0xFF);
+        pixelIndex++;
       }
     }
-    return convertedBytes.buffer.asUint8List();
+    print("The input buffer type: ");
+//    print(convertedBytes.buffer.asUint8List());
+    return convertedBytes;
   }
 
     @override
@@ -255,20 +284,19 @@ class _SortingState extends State<Sorting>{
                      ? Text('No image selected.')
 //                     : _recognitions
                      : Container(
-//                         children : _recognitions != null
-                            child : _recognitions != null
-                             ? Text("not null")
-                             : Text("null")
-//                             ? _recognitions.map((res) {
-//                               return Text(
-//                                 "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",
-//                               );
-//                         }).toList()
-//                             : _recognitions.map((res) {
-//                           return Text(
-//                             "test:0",
-//                           );
-//                         }).toList(), //if recognition is null
+                          child: Column(
+                            children: _recognitions != null
+                            ? _recognitions.map((res) {
+                               return Text(
+                                "${res.toString()}",
+                               );
+                               }).toList()
+                            : _recognitions.map((res) {
+                           return Text(
+                           "test:0",
+                           );
+                           }).toList(), //if recognition is null
+                          )
                         )
 //                 )_recognitions!=null
 //                     ? _recognitions.map((res) {
@@ -346,6 +374,14 @@ class _SortingState extends State<Sorting>{
       ),
     );
   }
+
+}
+
+class ObjectDetectionLabel {
+  String label;
+  double confidence;
+
+  ObjectDetectionLabel([this.label, this.confidence]);
 }
 
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "639315848103",
+    "firebase_url": "https://platinum-region-271823.firebaseio.com",
+    "project_id": "platinum-region-271823",
+    "storage_bucket": "platinum-region-271823.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639315848103:android:593f48d3ffefd4c1de6482",
+        "android_client_info": {
+          "package_name": "com.soton.gca_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639315848103-hpkgt2lo0pe02546pvkn58u7t4ague3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpzjcb0QeuX6ZqI0wBrbVfkiaJMe1CACE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639315848103-hpkgt2lo0pe02546pvkn58u7t4ague3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
