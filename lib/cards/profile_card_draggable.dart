@@ -19,16 +19,16 @@ class ProfileCardDraggable extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Card number 1',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w700)),
-                  Padding(padding: EdgeInsets.only(bottom: 8.0)),
-                  Text('A short description.', textAlign: TextAlign.start),
-//                  Text('Card number $cardNum',
+//                  Text('Card number 1',
 //                      style: TextStyle(
 //                          fontSize: 20.0, fontWeight: FontWeight.w700)),
 //                  Padding(padding: EdgeInsets.only(bottom: 8.0)),
 //                  Text('A short description.', textAlign: TextAlign.start),
+                  Text('Card number $cardNum',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.w700)),
+                  Padding(padding: EdgeInsets.only(bottom: 8.0)),
+                  Text('A short description.', textAlign: TextAlign.start),
                 ],
               ))
         ],

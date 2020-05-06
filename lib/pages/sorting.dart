@@ -40,8 +40,6 @@ class _SortingState extends State<Sorting>{
 
   Future getImage() async {
     loadModel();
-
-//    var image = await ImagePicker.pickImage(source: ImageSource.camera);
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
@@ -88,11 +86,6 @@ class _SortingState extends State<Sorting>{
         _l.removeLast();
         labels["gcp"] = _l;
       });
-
-//      res = await Tflite.loadModel(
-//          model: "assets/models/model.tflite",
-//          labels: "assets/models/dict.txt",
-//      );
       print("TF model loaded");
     }on PlatformException{
       print ("Failed to load model");
@@ -203,12 +196,6 @@ class _SortingState extends State<Sorting>{
 
     //extract text
     labeler.close();
-
-
-//    for (VisionEdgeImageLabel label in labels) {
-//      final String text = label.text;
-//      final double confidence = label.confidence;
-//    }
   }
 
   Uint8List imageToByteListFloat32(img.Image image, int inputSize, double mean, double std) {
@@ -228,7 +215,6 @@ class _SortingState extends State<Sorting>{
 
   Uint8List imageToByteListUint8(img.Image image, int inputSize) {
     var convertedBytes = new Uint8List(1 * inputSize * inputSize * 3);
-//    var buffer = Uint8List.view(convertedBytes.buffer);
     var buffer = new ByteData.view(convertedBytes.buffer);
     int pixelIndex = 0;
     for (var i = 0; i < inputSize; i++) {
@@ -243,7 +229,6 @@ class _SortingState extends State<Sorting>{
       }
     }
     print("The input buffer type: ");
-//    print(convertedBytes.buffer.asUint8List());
     return convertedBytes;
   }
 

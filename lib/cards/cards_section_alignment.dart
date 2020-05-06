@@ -55,6 +55,12 @@ class _CardsSectionState extends State<CardsSectionAlignment>
   }
 
   @override
+  dispose() {
+    _controller.dispose(); // you need this
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
         child: Stack(
