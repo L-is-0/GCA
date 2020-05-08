@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         Sorting.id:(context) => Sorting(),
         Tips.id:(context) => Tips(),
         Square.id:(context) => Square(),
-        Settings.id:(context) => Settings(),
+        Setting.id:(context) => Setting(),
       },
     );
   }
@@ -114,7 +114,7 @@ class MyHome extends StatelessWidget {
                           color: Colors.orange,
                         ),
                       ),GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/login'),
+                        onTap: () => Navigator.pushNamed(context, '/setting'),
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           child: Image(image: AssetImage('assets/images/icon4.png')),

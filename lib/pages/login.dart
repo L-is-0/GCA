@@ -54,11 +54,11 @@ class _LoginState extends State<Login>{
       titleTag: Constants.titleTag,
       // messages: LoginMessages(
       //   usernameHint: 'Username',
-      //   passwordHint: 'Pass',
+      //   passwordHint: 'Password',
       //   confirmPasswordHint: 'Confirm',
       //   loginButton: 'LOG IN',
       //   signupButton: 'REGISTER',
-      //   forgotPasswordButton: 'Forgot huh?',
+      //   forgotPasswordButton: 'Forgot your password?',
       //   recoverPasswordButton: 'HELP ME',
       //   goBackButton: 'GO BACK',
       //   confirmPasswordError: 'Not match!',
