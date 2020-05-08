@@ -40,18 +40,14 @@ class _SortingState extends State<Sorting>{
 
   Future getImage() async {
     loadModel();
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
       setState(() {
         _image = image;
       });
-//      makePostRequest(image);
-//      recognizeImageBinary(_image);
       predictImage(_image);
     }
-//    recognizeImageBinary(_image);
-//    await Tflite.close();
   }
 
   Future predictImage(File image) async {
@@ -116,7 +112,7 @@ class _SortingState extends State<Sorting>{
     var factor = 0.01;
 
     results = await interpreter.run(
-        localModelName: "gcp_model",
+        localModelName: "gcp",
         inputOutputOptions:
         FirebaseModelInputOutputOptions(
             [
@@ -147,7 +143,7 @@ class _SortingState extends State<Sorting>{
     
     if (label != null){
       setState(() {
-        _recognitions = [{"label is ": label, "confidence is ":cog}];
+        _recognitions = [{'label': label, "confidence" :cog}];
       });
     }else{
       _recognitions = [{"confidence":"0", "index":"0", "label":"null"}];
@@ -180,7 +176,6 @@ class _SortingState extends State<Sorting>{
   Future imagePrediction(File image) async {
     final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(image);
 //    FirebaseVision.instance.modelManager().setupModel('model', 'assets/models');
-
 //    final VisionEdgeImageLabeler visionEdgeLabeler = FirebaseVision.instance.visionEdgeImageLabeler('models');
 //    final List<VisionEdgeImageLabel> visionEdgeLabels = await visionEdgeLabeler.processImage(visionImage);
 
@@ -193,7 +188,6 @@ class _SortingState extends State<Sorting>{
       final String entityId = label.entityId;
       final double confidence = label.confidence;
     }
-
     //extract text
     labeler.close();
   }
@@ -273,27 +267,18 @@ class _SortingState extends State<Sorting>{
                             children: _recognitions != null
                             ? _recognitions.map((res) {
                                return Text(
-                                "${res.toString()}",
+                                 "${res["label"]} : ${res["confidence"].toStringAsFixed(3)}",
+                                   style: TextStyle(
+                                   color: Colors.black,
+                                   fontSize: 20.0,
+                                   background: Paint()..color = Colors.white,
+                                 ),
                                );
                                }).toList()
-                            : _recognitions.map((res) {
-                           return Text(
-                           "test:0",
-                           );
-                           }).toList(), //if recognition is null
+                            : [],
                           )
                         )
-//                 )_recognitions!=null
-//                     ? _recognitions.map((res) {
-//                   return Text(
-//                     "${res["index"]} - ${res["label"]}: ${res["confidence"].toStringAsFixed(3)}",
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 20.0,
-//                       background: Paint()..color = Colors.white,
-//                     ),
-//                   );
-//                 }).toList() : [],
+
 //                 Container(
 //                       decoration: BoxDecoration(
 //                           image: DecorationImage(
@@ -304,7 +289,7 @@ class _SortingState extends State<Sorting>{
 
 //                     : Image.file(_image),
 //                 Image(image: AssetImage('assets/images/tap.png')),
-                 //          color: Colors.red[400],
+                 //          color: Colors.red[400],)
                ),
              ),
            ],
