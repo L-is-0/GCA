@@ -1,21 +1,14 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-//import 'package:firebase_mlvision/firebase_mlvision.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tflite/tflite.dart';
 import 'package:image/image.dart' as img;
-import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:mlkit/mlkit.dart';
-
-
 
 const String visonML = "Auto ML";
 
@@ -254,44 +247,44 @@ class _SortingState extends State<Sorting>{
                  ),
                ),
              ),
-             GestureDetector(
-//               onTap: () => Navigator.pushNamed(context, '/scan'),
-               child: Container(
-                 padding: const EdgeInsets.all(8),
-                 child:
-                 _image == null
-                     ? Text('No image selected.')
-//                     : _recognitions
-                     : Container(
-                          child: Column(
-                            children: _recognitions != null
-                            ? _recognitions.map((res) {
-                               return Text(
-                                 "${res["label"]} : ${res["confidence"].toStringAsFixed(3)}",
+             Padding(
+                   padding: const EdgeInsets.all(8),
+                   child:
+                   _image == null
+                       ? Text('No image selected.')
+                       : Column(
+                          children: <Widget>[
+                            Container(
+                              height: 300,
+                               width: 300,
+                               decoration: BoxDecoration(
+                               image: DecorationImage(
+                                   alignment: Alignment.topCenter,
+                                   image: FileImage(_image),
+                                   fit: BoxFit.fill
+                               )
+//                                 color: Colors.red.withOpacity(0.5),
+                               ),
+                            ),
+                            Container(
+                             child:Column(
+                               children: _recognitions != null
+                                   ? _recognitions.map((res) {
+                                 return Text(
+                                   "${res["label"]} : ${res["confidence"].toStringAsFixed(3)}",
                                    style: TextStyle(
-                                   color: Colors.black,
-                                   fontSize: 20.0,
-                                   background: Paint()..color = Colors.white,
-                                 ),
-                               );
+                                     color: Colors.black,
+                                     fontSize: 18.0,
+        //                                   background: Paint()..color = Colors.white,
+                                   ),
+                                 );
                                }).toList()
-                            : [],
-                          )
-                        )
-
-//                 Container(
-//                       decoration: BoxDecoration(
-//                           image: DecorationImage(
-//                               alignment: Alignment.topCenter,
-//                               image: MemoryImage(_recognitions),
-//                               fit: BoxFit.fill)),
-//                       child: Opacity(opacity: 0.3, child: Image.file(_image))),
-
-//                     : Image.file(_image),
-//                 Image(image: AssetImage('assets/images/tap.png')),
-                 //          color: Colors.red[400],)
-               ),
-             ),
+                                   : [],
+                              ),
+                            )
+                          ],
+                   )
+              ),
            ],
         )
       ),
