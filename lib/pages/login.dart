@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:gca_app/constants.dart';
 import 'package:gca_app/main.dart';
-//import 'dashboard_screen.dart';
 import 'package:gca_app/users.dart';
 import '../main.dart';
 
 class Login extends StatefulWidget{
   static const String id = "/login";
   static const routeName = '/auth';
-
-//  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   @override
   _LoginState createState() => _LoginState();
@@ -29,21 +25,36 @@ class Login extends StatefulWidget{
       if (mockUsers[data.name] != data.password) {
         return 'Password does not match';
       }
-
       return  Navigator.push(
           context, MaterialPageRoute(builder: (context) => MyHome()));
-//      return null;
+    });
+  }
+
+  Future<String> _signupUser(LoginData data){
+    return Future.delayed(loginTime).then((_) {
+      if (!mockUsers.containsKey(data.name)) {
+        return 'Username not exists';
+      }
+      if (mockUsers[data.name] != data.password) {
+        return 'Password does not match';
+      }
+
+      // TODO: NEED TO ADD THE USER TO LIST
+      return null;
     });
   }
 
   Future<String> _recoverPassword(String name) {
     return Future.delayed(loginTime).then((_) {
       if (!mockUsers.containsKey(name)) {
-        return 'Username not exists';
+        return 'Username does not exists';
       }
+
+      //TODO: UPDATE PASSWORD WITH THE USERNAME
       return null;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final inputBorder = BorderRadius.vertical(
@@ -63,11 +74,11 @@ class Login extends StatefulWidget{
          loginButton: 'LOG IN',
          signupButton: 'REGISTER',
          forgotPasswordButton: 'Forgot your password?',
-         recoverPasswordButton: 'HELP ME',
+         recoverPasswordButton: 'RECOVER IT',
          goBackButton: 'GO BACK',
          confirmPasswordError: 'Not match!',
-         recoverPasswordIntro: 'Don\'t feel bad. Happens all the time.',
-         recoverPasswordDescription: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+         recoverPasswordIntro: 'Don\'t feel bad. It happens all the time.',
+         recoverPasswordDescription: 'Please enter your registed email address to reset your password',
          recoverPasswordSuccess: 'Password rescued successfully',
        ),
       emailValidator: (value) {
@@ -100,16 +111,8 @@ class Login extends StatefulWidget{
         return _recoverPassword(name);
         // Show new password dialog
       },
-      showDebugButtons: true,
+      showDebugButtons: false,
     );
   }
-//    return Scaffold(
-//      appBar: AppBar(
-//        title:Text('Login'),
-//      ),
-//      body: Center(
-//        child: Text('Login Page'),
-//      ),
-//    );
 }
 
