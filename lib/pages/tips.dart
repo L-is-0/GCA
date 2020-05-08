@@ -36,8 +36,8 @@ class _TipsState extends State<Tips>{
       body: Column(
         children: <Widget>[
           showAlignmentCards
-              ? CardsSectionAlignment(context)
-              : CardsSectionDraggable(),
+              ? CardsSectionDraggable()
+              : CardsSectionAlignment(context),
           buttonsRow()
         ],
       ),

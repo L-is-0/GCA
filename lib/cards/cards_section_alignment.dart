@@ -40,8 +40,9 @@ class _CardsSectionState extends State<CardsSectionAlignment>
 
     // Init cards
     for (cardsCounter = 0; cardsCounter < 3; cardsCounter++) {
-      cards.add(ProfileCardAlignment(cardsCounter));
-    }
+      cards.add(ProfileCardAlignment(cardsCounter+1));
+//      cards.add(ProfileCardAlignment(2));
+    } 
 
     frontCardAlign = cardsAlign[2];
 
@@ -157,8 +158,8 @@ class _CardsSectionState extends State<CardsSectionAlignment>
       cards[1] = cards[2];
       cards[2] = temp;
 
-      cards[2] = ProfileCardAlignment(cardsCounter);
-      cardsCounter++;
+//      cards[2] = ProfileCardAlignment(cardsCounter);
+//      cardsCounter++;
 
       frontCardAlign = defaultFrontCardAlign;
       frontCardRot = 0.0;

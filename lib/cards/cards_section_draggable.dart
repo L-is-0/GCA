@@ -16,7 +16,7 @@ class _CardsSectionState extends State<CardsSectionDraggable> {
     super.initState();
 
     for (cardsCounter = 0; cardsCounter < 3; cardsCounter++) {
-      cards.add(ProfileCardDraggable(cardsCounter));
+      cards.add(ProfileCardDraggable(cardsCounter+1));
     }
   }
 
@@ -83,8 +83,8 @@ class _CardsSectionState extends State<CardsSectionDraggable> {
       cards[1] = cards[2];
       cards[2] = temp;
 
-      cards[2] = ProfileCardDraggable(cardsCounter);
-      cardsCounter++;
+//      cards[2] = ProfileCardDraggable(cardsCounter);
+//      cardsCounter++;
     });
   }
 
