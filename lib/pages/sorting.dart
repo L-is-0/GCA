@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'package:http/http.dart' as http;
 import 'package:mlkit/mlkit.dart';
+import '../customDialog.dart';
 
 const String visonML = "Auto ML";
 
@@ -41,6 +42,27 @@ class _SortingState extends State<Sorting>{
       });
       predictImage(_image);
     }
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: "Success",
+          description: "Here is the predicted garbage type",
+          buttonText: "okay",
+          image: _image,
+          recognitions: _recognitions,
+        )
+    )
+    ;
+  }
+
+  Future createDialogBox(BuildContext context) {
+    return showDialog(context: context, builder:(context) {
+        return AlertDialog(
+            title: Text("Your name"),
+            content: Text("Hi")
+        );
+    });
   }
 
   Future predictImage(File image) async {
@@ -252,38 +274,7 @@ class _SortingState extends State<Sorting>{
                    child:
                    _image == null
                        ? Text('No image selected.')
-                       : Column(
-                          children: <Widget>[
-                            Container(
-                              height: 300,
-                               width: 300,
-                               decoration: BoxDecoration(
-                               image: DecorationImage(
-                                   alignment: Alignment.topCenter,
-                                   image: FileImage(_image),
-                                   fit: BoxFit.fill
-                               )
-//                                 color: Colors.red.withOpacity(0.5),
-                               ),
-                            ),
-                            Container(
-                             child:Column(
-                               children: _recognitions != null
-                                   ? _recognitions.map((res) {
-                                 return Text(
-                                   "${res["label"]} : ${res["confidence"].toStringAsFixed(3)}",
-                                   style: TextStyle(
-                                     color: Colors.black,
-                                     fontSize: 18.0,
-        //                                   background: Paint()..color = Colors.white,
-                                   ),
-                                 );
-                               }).toList()
-                                   : [],
-                              ),
-                            )
-                          ],
-                   )
+                       : Text('Predicting')
               ),
            ],
         )
@@ -337,7 +328,6 @@ class _SortingState extends State<Sorting>{
       ),
     );
   }
-
 }
 
 class ObjectDetectionLabel {
