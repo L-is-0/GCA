@@ -114,7 +114,7 @@ class MyHome extends StatelessWidget {
                           color: Colors.orange,
                         ),
                       ),GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/setting'),
+                        onTap: () => Navigator.pushNamed(context, '/login'),
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           child: Image(image: AssetImage('assets/images/icon4.png')),

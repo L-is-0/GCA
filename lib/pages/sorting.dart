@@ -323,7 +323,6 @@ class _SortingState extends State<Sorting>{
 class ObjectDetectionLabel {
   String label;
   double confidence;
-
   ObjectDetectionLabel([this.label, this.confidence]);
 }
 
