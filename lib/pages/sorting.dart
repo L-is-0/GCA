@@ -25,6 +25,7 @@ class _SortingState extends State<Sorting>{
   List _recognitions;
   String res;
   String _model = visonML;
+  String displayText = "Please select an item to start";
   Map<String, List<String>> labels = {
     "gcp": null,
   };
@@ -40,10 +41,10 @@ class _SortingState extends State<Sorting>{
       setState(() {
         _image = image;
       });
-      predictImage(_image);
+      await predictImage(_image);
     }
 
-    showDialog(
+    await showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
           title: "Success",
@@ -52,21 +53,16 @@ class _SortingState extends State<Sorting>{
           image: _image,
           recognitions: _recognitions,
         )
-    )
-    ;
-  }
+    );
 
-  Future createDialogBox(BuildContext context) {
-    return showDialog(context: context, builder:(context) {
-        return AlertDialog(
-            title: Text("Your name"),
-            content: Text("Hi")
-        );
+    setState(() {
+      displayText = "Please select an item to start";
     });
   }
 
   Future predictImage(File image) async {
     print ("debug: start to predict image");
+    displayText = "Predicting";
     if (image == null) return;
     await autoML(image);
   }
@@ -268,10 +264,7 @@ class _SortingState extends State<Sorting>{
              ),
              Padding(
                    padding: const EdgeInsets.all(8),
-                   child:
-                   _image == null
-                       ? Text('No image selected.')
-                       : Text('Predicting')
+                   child:Text(displayText)
               ),
            ],
         )
