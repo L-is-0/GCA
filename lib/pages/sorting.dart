@@ -151,11 +151,8 @@ class _SortingState extends State<Sorting>{
             results[0][0][i] / factor));
       }
     }
-    
     var label = currentLabels[0].label;
     var cog = currentLabels[0].confidence;
-    
-    
     if (label != null){
       setState(() {
         _recognitions = [{'label': label, "confidence" :cog}];
@@ -304,14 +301,14 @@ class _SortingState extends State<Sorting>{
         shape: CircleBorder(),
         children: [
           SpeedDialChild(
-              child: Icon(Icons.accessibility),
+              child: Image.asset('assets/images/search.png'),
               backgroundColor: Colors.red,
-              label: 'Search',
+              label: 'Search Name',
               labelStyle: TextStyle(fontSize: 18.0),
               onTap: () => print('SEARCH ITEM')
           ),
           SpeedDialChild(
-            child: Icon(Icons.brush),
+            child: Image.asset('assets/images/barcode.png'),
             backgroundColor: Colors.blue,
             label: 'Barcode',
             labelStyle: TextStyle(fontSize: 18.0),
