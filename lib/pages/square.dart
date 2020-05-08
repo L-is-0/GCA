@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 export 'package:gca_app/tab//pointTabIndicator.dart';
 import 'package:gca_app/tab//pointTabIndicator.dart';
+import 'package:gca_app/users.dart';
 
 class Square extends StatefulWidget{
   static const String id = "/square";
