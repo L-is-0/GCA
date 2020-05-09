@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
 import 'package:gca_app/constants.dart';
 import 'package:gca_app/main.dart';
-import 'package:gca_app/users.dart';
+import 'file:///F:/Southampton/Y3S1/ThirdYearProject/GCA/GarbageClassificationApp/gca_app/lib/data/users.dart';
 import '../main.dart';
 
 class Login extends StatefulWidget{
