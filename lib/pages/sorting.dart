@@ -10,6 +10,8 @@ import 'package:image/image.dart' as img;
 import 'package:http/http.dart' as http;
 import 'package:mlkit/mlkit.dart';
 import '../customDialog.dart';
+import 'dart:math';
+
 
 const String visonML = "Auto ML";
 
@@ -147,8 +149,25 @@ class _SortingState extends State<Sorting>{
             results[0][0][i] / factor));
       }
     }
-    var label = currentLabels[0].label;
-    var cog = currentLabels[0].confidence;
+//    var label = currentLabels[0].label;
+//    var cog = currentLabels[0].confidence;
+
+
+    print ("the results set:");
+
+    double max=0;
+    int max_i =0;
+
+    for(var i=0; i<currentLabels.length; i++){
+      if(currentLabels[i].confidence > max){
+        max = currentLabels[i].confidence;
+        max_i = i;
+      }
+    }
+    
+    var label = currentLabels[max_i].label;
+    var cog = currentLabels[max_i].confidence;
+
     if (label != null){
       setState(() {
         _recognitions = [{'label': label, "confidence" :cog}];
@@ -318,6 +337,7 @@ class _SortingState extends State<Sorting>{
       ),
     );
   }
+
 }
 
 class ObjectDetectionLabel {
