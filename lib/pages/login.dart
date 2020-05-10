@@ -3,8 +3,11 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
 import 'package:gca_app/constants.dart';
 import 'package:gca_app/main.dart';
-import 'file:///F:/Southampton/Y3S1/ThirdYearProject/GCA/GarbageClassificationApp/gca_app/lib/data/users.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../data/users.dart';
 import '../main.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class Login extends StatefulWidget{
   static const String id = "/login";
@@ -15,8 +18,9 @@ class Login extends StatefulWidget{
 }
 
   class _LoginState extends State<Login>{
+    bool _success;
+    Duration loginTime = Duration(milliseconds: timeDilation.ceil() * 2250);
 
-   Duration loginTime = Duration(milliseconds: timeDilation.ceil() * 2250);
     Future<String> _loginUser(LoginData data) {
     return Future.delayed(loginTime).then((_) {
       if (!mockUsers.containsKey(data.name)) {
@@ -31,16 +35,18 @@ class Login extends StatefulWidget{
   }
 
   Future<String> _signupUser(LoginData data){
+      var results;
     return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(data.name)) {
-        return 'Username not exists';
+      if (mockUsers.containsKey(data.name)) {
+        return 'Username already exists';
       }
-      if (mockUsers[data.name] != data.password) {
-        return 'Password does not match';
+      _register(data.name, data.password);
+      if(_success=true){
+        return  Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyHome()));
+      }else{
+        return "Register failed";
       }
-
-      // TODO: NEED TO ADD THE USER TO LIST
-      return null;
     });
   }
 
@@ -49,11 +55,25 @@ class Login extends StatefulWidget{
       if (!mockUsers.containsKey(name)) {
         return 'Username does not exists';
       }
-
       //TODO: UPDATE PASSWORD WITH THE USERNAME
       return null;
     });
   }
+
+   void _register(String name, String psw) async {
+     final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+       email: name,
+       password: psw,
+     ))
+         .user;
+     if (user != null) {
+       setState(() {
+          _success = true;
+       });
+     } else {
+       _success = false;
+     }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +123,7 @@ class Login extends StatefulWidget{
         print('Signup info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        return _loginUser(loginData);
+        return _signupUser(loginData);
       },
       onRecoverPassword: (name) {
         print('Recover password info');

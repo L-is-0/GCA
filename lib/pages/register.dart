@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class Register extends StatefulWidget{
   static const String id = "/register";
@@ -19,5 +22,6 @@ class _RegisterState extends State<Register>{
       ),
     );
   }
+
 }
 

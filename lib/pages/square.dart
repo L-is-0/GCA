@@ -25,7 +25,7 @@ class _SquareState extends State<Square>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Friend Square'),
+        title: Text('Friend \'s Circle'),
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,

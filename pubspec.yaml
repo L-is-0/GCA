@@ -36,6 +36,7 @@ dependencies:
   firebase_ml_vision: ^0.9.3+8
   mlkit: ^0.15.1
   settings: ^0.0.4
+  firebase_auth: ^0.16.0
 
 #  firebase_mlvision:
 #    git:
