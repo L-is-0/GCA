@@ -4,10 +4,13 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:gca_app/constants.dart';
 import 'package:gca_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../data/users.dart';
 import '../main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn _googleSignIn = GoogleSignIn();
+
 
 class Login extends StatefulWidget{
   static const String id = "/login";
