@@ -164,7 +164,7 @@ class _SortingState extends State<Sorting>{
         max_i = i;
       }
     }
-    
+
     var label = currentLabels[max_i].label;
     var cog = currentLabels[max_i].confidence;
 
