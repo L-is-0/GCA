@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -21,30 +23,28 @@ class Login extends StatefulWidget{
 }
 
   class _LoginState extends State<Login>{
-    bool _success;
+    bool _signup, _login;
     Duration loginTime = Duration(milliseconds: timeDilation.ceil() * 2250);
 
-    Future<String> _loginUser(LoginData data) {
-    return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(data.name)) {
-        return 'Username not exists';
+    Future<String> _loginUser(LoginData data) async {
+      FirebaseUser user;
+      String errorMessage;
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: data.name, password: data.password).catchError((e){errorMessage=e.message;});
+      if(result!=null){
+        user = result.user;
+        return user.uid;
+      }else{
+        return errorMessage;
       }
-      if (mockUsers[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      return  Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyHome()));
-    });
   }
 
   Future<String> _signupUser(LoginData data){
-      var results;
     return Future.delayed(loginTime).then((_) {
       if (mockUsers.containsKey(data.name)) {
         return 'Username already exists';
       }
       _register(data.name, data.password);
-      if(_success=true){
+      if(_signup=true){
         return  Navigator.push(
             context, MaterialPageRoute(builder: (context) => MyHome()));
       }else{
@@ -71,10 +71,10 @@ class Login extends StatefulWidget{
          .user;
      if (user != null) {
        setState(() {
-          _success = true;
+         _signup = true;
        });
      } else {
-       _success = false;
+       _signup = false;
      }
    }
 
