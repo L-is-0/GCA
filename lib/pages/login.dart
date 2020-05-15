@@ -23,7 +23,7 @@ class Login extends StatefulWidget{
 }
 
   class _LoginState extends State<Login>{
-    bool _signup, _login;
+    bool _signup;
     Duration loginTime = Duration(milliseconds: timeDilation.ceil() * 2250);
 
     Future<String> _loginUser(LoginData data) async {
@@ -39,16 +39,15 @@ class Login extends StatefulWidget{
   }
 
   Future<String> _signupUser(LoginData data){
-    return Future.delayed(loginTime).then((_) {
-      if (mockUsers.containsKey(data.name)) {
-        return 'Username already exists';
-      }
-      _register(data.name, data.password);
-      if(_signup=true){
-        return  Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyHome()));
+    FirebaseUser user;
+    String errorMessage;
+    return Future.delayed(loginTime).then((_) async {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: data.name, password: data.password).catchError((e){errorMessage=e.message;});
+      if(result!=null){
+        user = result.user;
+        return user.uid;
       }else{
-        return "Register failed";
+      return errorMessage;
       }
     });
   }
@@ -62,22 +61,7 @@ class Login extends StatefulWidget{
       return null;
     });
   }
-
-   void _register(String name, String psw) async {
-     final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-       email: name,
-       password: psw,
-     ))
-         .user;
-     if (user != null) {
-       setState(() {
-         _signup = true;
-       });
-     } else {
-       _signup = false;
-     }
-   }
-
+  
   @override
   Widget build(BuildContext context) {
     final inputBorder = BorderRadius.vertical(
