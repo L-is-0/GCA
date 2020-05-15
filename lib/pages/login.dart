@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
 import 'package:gca_app/constants.dart';
-import 'package:gca_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../data/users.dart';
-import '../main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -46,6 +44,8 @@ class Login extends StatefulWidget{
       if(result!=null){
         user = result.user;
         return user.uid;
+        //TODO: ADD THE USERS TO DATABASE:PROFILES
+        //userID:user.uid, points:0
       }else{
       return errorMessage;
       }
@@ -61,7 +61,7 @@ class Login extends StatefulWidget{
       return null;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final inputBorder = BorderRadius.vertical(

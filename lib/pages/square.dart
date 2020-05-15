@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 export 'package:gca_app/tab//pointTabIndicator.dart';
 import 'package:gca_app/tab//pointTabIndicator.dart';
 import 'file:///F:/Southampton/Y3S1/ThirdYearProject/GCA/GarbageClassificationApp/gca_app/lib/data/users.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Square extends StatefulWidget{
   static const String id = "/square";
@@ -12,6 +13,7 @@ class Square extends StatefulWidget{
 
 class _SquareState extends State<Square>
   with SingleTickerProviderStateMixin {
+  final dbRef = FirebaseDatabase.instance.reference().child("pets");
   final tabList = ['Daily List', 'Weekly list'];
   TabController _tabController;
 
