@@ -7,6 +7,7 @@ import 'package:gca_app/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../data/users.dart';
+import '../main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -30,7 +31,10 @@ class Login extends StatefulWidget{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: data.name, password: data.password).catchError((e){errorMessage=e.message;});
       if(result!=null){
         user = result.user;
-        return user.uid;
+        return  Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyHome()
+        ));
+//        return user.uid;
       }else{
         return errorMessage;
       }

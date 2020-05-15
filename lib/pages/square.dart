@@ -13,8 +13,9 @@ class Square extends StatefulWidget{
 
 class _SquareState extends State<Square>
   with SingleTickerProviderStateMixin {
-  final dbRef = FirebaseDatabase.instance.reference().child("pets");
+  final dbRef = FirebaseDatabase.instance.reference().child("profiles");
   final tabList = ['Daily List', 'Weekly list'];
+  var lists = [];
   TabController _tabController;
 
   @override
@@ -45,12 +46,94 @@ class _SquareState extends State<Square>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildList(key: "key1", list: mockUsers.keys),
-          _buildList(key: "key2", list: mockUsers.keys),
+          FutureBuilder(
+              future: dbRef.once(),
+              builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  lists.clear();
+                  Map<dynamic, dynamic> values = snapshot.data.value;
+                  values.forEach((key, values) {
+                    lists.add(values);
+                  });
+                  return new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: lists.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Email: " + lists[index]["email"]),
+                              Text("Username: "+ lists[index]["username"].toString()),
+                              Text("Points: " +lists[index]["points"].toString()),
+                            ],
+                          ),
+                        );
+                      });
+                }
+                return CircularProgressIndicator();
+              }),
+          FutureBuilder(
+              future: dbRef.once(),
+              builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  lists.clear();
+                  Map<dynamic, dynamic> values = snapshot.data.value;
+                  values.forEach((key, values) {
+                    lists.add(values);
+                  });
+                  return new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: lists.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Email: " + lists[index]["email"]),
+                              Text("Username: "+ lists[index]["username"].toString()),
+                              Text("Points: " +lists[index]["points"].toString()),
+                            ],
+                          ),
+                        );
+                      });
+                }
+                return CircularProgressIndicator();
+              })
+//          _buildList(key: "key1", list: mockUsers.keys),
+//          _buildList(key: "key2", list: mockUsers.keys),
         ],
       ),
     );
   }
+
+//  FutureBuilder(
+//    future: dbRef.once(),
+//    builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+//        if (snapshot.hasData) {
+//        lists.clear();
+//        Map<dynamic, dynamic> values = snapshot.data.value;
+//        values.forEach((key, values) {
+//          lists.add(values);
+//        });
+//        return new ListView.builder(
+//          shrinkWrap: true,
+//          itemCount: lists.length,
+//          itemBuilder: (BuildContext context, int index) {
+//               return Card(
+//                child: Column(
+//                    crossAxisAlignment: CrossAxisAlignment.start,
+//                    children: <Widget>[
+//                    Text("Name: " + lists[index]["name"]),
+//                    Text("Age: "+ lists[index]["age"]),
+//                    Text("Type: " +lists[index]["type"]),
+//                ],
+//                ),
+//                );
+//          });
+//        }
+//    return CircularProgressIndicator();
+//  })
 
   Widget _buildList({String key, Iterable list}) {
     return ListView.builder(
