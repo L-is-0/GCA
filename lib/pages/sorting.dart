@@ -273,13 +273,38 @@ class _SortingState extends State<Sorting>{
     @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:Text('Sorting'),
-      ),
       body: Align(
         alignment: Alignment.center,
          child: Column(
            children: <Widget>[
+             Container(
+               margin: EdgeInsets.only(top:10.0),
+               child: Center(
+                 child: Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 20),
+                   child: Padding(
+                     padding: const EdgeInsets.all(20),
+                     child: TextField(
+                       decoration: InputDecoration(
+                         labelStyle: TextStyle(
+                             color: Colors.grey
+                         ),
+                         labelText: "Search",
+                         hintText: "Search",
+                         hintStyle: TextStyle(
+                             color: Colors.white
+                         ),
+                         prefixIcon: Icon(Icons.search),
+                         enabledBorder: OutlineInputBorder(
+                             borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                             borderSide: BorderSide(color: Colors.grey)
+                         ),
+                       ),
+                     ),
+                   ),
+                 ),
+               ),
+             ),
              Padding(
                padding:const EdgeInsets.only(top:30, bottom: 10),
                child: Text(

@@ -28,9 +28,9 @@ class _SquareState extends State<Square>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Friend \'s Circle'),
-        centerTitle: true,
-        bottom: TabBar(
+//        title: Text('Friend \'s Circle'),
+//        centerTitle: true,
+        title:TabBar(
           controller: _tabController,
           indicator: PointTabIndicator(
             position: PointTabIndicatorPosition.bottom,
@@ -63,9 +63,18 @@ class _SquareState extends State<Square>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(lists[index]["username"].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                              Text("Email: " + lists[index]["email"]),
-                              Text("Points: " +lists[index]["points"].toString()),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right:20, top: 6, bottom: 3),
+                                child:Text(lists[index]["username"].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right:20),
+                                child: Text("Email: " + lists[index]["email"]),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right:20, bottom: 5),
+                                child: Text("Points: " +lists[index]["points"].toString()),
+                              )
                             ],
                           ),
                         );
@@ -90,9 +99,18 @@ class _SquareState extends State<Square>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(lists[index]["username"].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                              Text("Email: " + lists[index]["email"]),
-                              Text("Points: " +lists[index]["points"].toString()),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right:20, top: 6, bottom: 3),
+                                child:Text(lists[index]["username"].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right:20),
+                                child: Text("Email: " + lists[index]["email"]),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right:20, bottom: 5),
+                                child: Text("Points: " +lists[index]["points"].toString()),
+                              )
                             ],
                           ),
                         );
