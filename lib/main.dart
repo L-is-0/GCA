@@ -5,6 +5,7 @@
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gca_app/pages/login.dart';
 import 'package:gca_app/pages/register.dart';
 import 'package:gca_app/pages/settings.dart';
@@ -89,38 +90,62 @@ class MyHome extends StatelessWidget {
                       GestureDetector(
                         onTap: () => Navigator.pushNamed(context, '/sorting'),
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child:
-                          Image(
-                              image: AssetImage('assets/images/icon1.png'),
-                          ),
                           color: Colors.lightGreen[900],
+//                          padding: const EdgeInsets.all(30),
+                          child:Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                                Image(image: AssetImage('assets/images/icon1.png')),
+                                Text("sorting", style: TextStyle(color: Colors.white))
+                              ],
+                            ),
                         ),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pushNamed(context, '/tips'),
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child:
-                          Image(image: AssetImage('assets/images/icon3.png')),
                           color: Colors.red[400],
+//                          padding: const EdgeInsets.all(30),
+                          child:Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image(image: AssetImage('assets/images/icon3.png')),
+                              SizedBox(height: 5),
+                              Text("tips", style: TextStyle(color: Colors.white),)
+                            ],
+                          ),
                         ),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pushNamed(context, '/square'),
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Image(image: AssetImage('assets/images/icon2.png')),
                           color: Colors.orange,
+//                          padding: const EdgeInsets.all(30),
+                          child:Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image(image: AssetImage('assets/images/icon2.png')),
+                              SizedBox(height: 5),
+                              Text("square", style: TextStyle(color: Colors.white),)
+                            ],
+                          ),
                         ),
-                      ),GestureDetector(
+                      ),
+                      GestureDetector(
                         onTap: () => Navigator.pushNamed(context, '/login'),
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Image(image: AssetImage('assets/images/icon4.png')),
                           color: Colors.grey[700],
-                      ),
-                    ),
+//                          padding: const EdgeInsets.all(30),
+                          child:Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image(image: AssetImage('assets/images/icon4.png')),
+                              SizedBox(height: 5),
+                              Text("settings", style: TextStyle(color: Colors.white),)
+                            ],
+                          ),
+                        ),
+                      )
                   ],
                 ),
                 ),
