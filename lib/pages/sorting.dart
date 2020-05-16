@@ -285,7 +285,8 @@ class _SortingState extends State<Sorting>{
                child: Text(
                  "Hello, "+ username.toString(),
                  style: TextStyle(
-                     fontSize: 16
+                     fontSize: 16,
+                     fontWeight: FontWeight.bold
                  ),
                ),
              ),
@@ -299,9 +300,20 @@ class _SortingState extends State<Sorting>{
                ),
              ),
              Padding(
-                   padding: const EdgeInsets.all(8),
-                   child:Text(displayText)
-              ),
+                 padding: const EdgeInsets.all(8),
+                 child:Image.asset('assets/images/bin.png')
+             ),
+             Padding(
+                 padding: const EdgeInsets.all(8),
+                 child: FlatButton(
+                   color: Colors.blue[200],
+                   onPressed: () => getImage(),
+                   child: Text(
+                       "Start Classifying",
+                        style: TextStyle(color: Colors.white),
+                   ),
+                 )
+             )
            ],
         )
       ),
