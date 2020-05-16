@@ -63,8 +63,8 @@ class _SquareState extends State<Square>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              Text(lists[index]["username"].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                               Text("Email: " + lists[index]["email"]),
-                              Text("Username: "+ lists[index]["username"].toString()),
                               Text("Points: " +lists[index]["points"].toString()),
                             ],
                           ),
@@ -90,8 +90,8 @@ class _SquareState extends State<Square>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              Text(lists[index]["username"].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                               Text("Email: " + lists[index]["email"]),
-                              Text("Username: "+ lists[index]["username"].toString()),
                               Text("Points: " +lists[index]["points"].toString()),
                             ],
                           ),

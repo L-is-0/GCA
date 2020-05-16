@@ -10,10 +10,13 @@ import 'package:image/image.dart' as img;
 import 'package:http/http.dart' as http;
 import 'package:mlkit/mlkit.dart';
 import '../customDialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
 
 
 const String visonML = "Auto ML";
+final FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseUser user;
 
 class Sorting extends StatefulWidget{
   static const String id = "/sorting";
@@ -28,12 +31,26 @@ class _SortingState extends State<Sorting>{
   String res;
   String _model = visonML;
   String displayText = "Please select an item to start";
+  String username= "Peter";
+
   Map<String, List<String>> labels = {
     "gcp": null,
   };
 
   FirebaseModelInterpreter interpreter = FirebaseModelInterpreter.instance;
   FirebaseModelManager manager = FirebaseModelManager.instance;
+
+  _SortingState(){
+    getCurrentUser().then((val) => setState(() {
+      username = val;
+    }));
+  }
+
+  Future<String> getCurrentUser() async {
+    user = await _auth.currentUser();
+    username = user.email;
+    return username;
+  }
 
   Future getImage() async {
     loadModel();
@@ -266,7 +283,7 @@ class _SortingState extends State<Sorting>{
              Padding(
                padding:const EdgeInsets.all(20),
                child: Text(
-                 "Hello, Peter!",
+                 "Hello, "+ username.toString(),
                  style: TextStyle(
                      fontSize: 16
                  ),
