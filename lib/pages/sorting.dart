@@ -281,7 +281,7 @@ class _SortingState extends State<Sorting>{
          child: Column(
            children: <Widget>[
              Padding(
-               padding:const EdgeInsets.all(20),
+               padding:const EdgeInsets.only(top:30, bottom: 10),
                child: Text(
                  "Hello, "+ username.toString(),
                  style: TextStyle(
@@ -291,11 +291,12 @@ class _SortingState extends State<Sorting>{
                ),
              ),
              Padding(
-               padding:const EdgeInsets.all(10),
+               padding:const EdgeInsets.only(top:5, bottom: 10, left:60, right:20),
                child: Text(
-                 "Let's begin your recycle!",
+                 "Let's begin your recycle journey by classifying garbages !",
                  style: TextStyle(
-                     fontSize: 16
+                     fontSize: 16,
+                     color: Colors.black45
                  ),
                ),
              ),
