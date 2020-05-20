@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -11,7 +12,7 @@ import '../main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
-
+final dbRef = FirebaseDatabase.instance.reference().child("profiles");
 
 class Login extends StatefulWidget{
   static const String id = "/login";
@@ -47,14 +48,26 @@ class Login extends StatefulWidget{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: data.name, password: data.password).catchError((e){errorMessage=e.message;});
       if(result!=null){
         user = result.user;
-        return user.uid;
-        //TODO: ADD THE USERS TO DATABASE:PROFILES
-        //userID:user.uid, points:0
+       _addUserTodb(user.uid, user.email);
+       return user.uid;
       }else{
       return errorMessage;
       }
     });
   }
+
+    Future<String> _addUserTodb(String uid, String email) {
+      dbRef.child(uid).set({
+        "email": email,
+        "points": 0,
+        "username" : "null"
+      }).then((_) {
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('Successfully Added')));
+      }).catchError((onError) {
+        print(onError);
+      });
+    }
 
   Future<String> _recoverPassword(String name) {
     return Future.delayed(loginTime).then((_) {
