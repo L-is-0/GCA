@@ -151,22 +151,6 @@ class _HomeState extends State<Home> {
               )
           ),
         ),
-        drawer:
-        GFDrawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              ListTile(
-                title: Text('Item 1'),
-                onTap: null,
-              ),
-              ListTile(
-                title: Text('Item 2'),
-                onTap: null,
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
