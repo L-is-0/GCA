@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
 import 'package:gca_app/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gca_app/pages/home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../data/users.dart';
 import '../main.dart';
@@ -33,7 +34,7 @@ class Login extends StatefulWidget{
       if(result!=null){
         user = result.user;
         return  Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MyHome()
+        context, MaterialPageRoute(builder: (context) => Home()
         ));
 //        return user.uid;
       }else{
@@ -50,7 +51,7 @@ class Login extends StatefulWidget{
         user = result.user;
        _addUserTodb(user.uid, user.email);
         return  Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyHome()
+            context, MaterialPageRoute(builder: (context) => Home()
         ));
       }else{
       return errorMessage;
