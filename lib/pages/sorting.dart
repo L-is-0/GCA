@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'dart:math';
 const String visonML = "Auto ML";
 final FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseUser user;
+int point=0;
 
 class Sorting extends StatefulWidget{
   static const String id = "/sorting";
@@ -32,6 +34,9 @@ class _SortingState extends State<Sorting>{
   String _model = visonML;
   String displayText = "Please select an item to start";
   String username= "Peter";
+  String uid;
+  String email = "peter@gcp.com";
+  final dbRef = FirebaseDatabase.instance.reference().child("profiles");
 
   Map<String, List<String>> labels = {
     "gcp": null,
@@ -48,7 +53,16 @@ class _SortingState extends State<Sorting>{
 
   Future<String> getCurrentUser() async {
     user = await _auth.currentUser();
-    username = user.email;
+    uid = user.uid;
+    dbRef.orderByKey().equalTo(uid).once().then((DataSnapshot snapshot) {
+      print('Connected to the database and read ${snapshot.value}');
+      setState(() {
+        username = snapshot.value[uid]["username"];
+        email = snapshot.value[uid]["email"];
+        point = snapshot.value[uid]["points"];
+      });
+    });
+
     return username;
   }
 
@@ -76,6 +90,23 @@ class _SortingState extends State<Sorting>{
 
     setState(() {
       displayText = "Please select an item to start";
+      point+=1;
+    });
+
+    await updateDB(point, uid);
+    print(point);
+  }
+
+  Future updateDB(int p, String uid){
+    dbRef.child(uid).set({
+      "email": email,
+      "points": point,
+      "username" : username
+    }).then((_) {
+      Scaffold.of(context).showSnackBar(
+          SnackBar(content: Text('Successfully Added')));
+    }).catchError((onError) {
+      print(onError);
     });
   }
 
