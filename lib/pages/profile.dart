@@ -9,6 +9,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseUser user;
 String username= "Peter";
 String email = "peter@gcp.com";
+int point = 0;
 DataSnapshot dbSnapshot;
 
 class Profile extends StatefulWidget {
@@ -39,6 +40,7 @@ class MapScreenState extends State<Profile>
       setState(() {
         username = snapshot.value[uid]["username"];
         email = snapshot.value[uid]["email"];
+        point = snapshot.value[uid]["points"];
       });
     });
   }
@@ -225,6 +227,37 @@ class MapScreenState extends State<Profile>
                                       enabled: !_status,
                                     ),
                                   ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Text(
+                                        'Points',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Text(
+                                      point.toString(),
+                                  )
                                 ],
                               )),
                           !_status ? _getActionButtons() : new Container(),
