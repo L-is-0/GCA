@@ -13,7 +13,7 @@ class Square extends StatefulWidget{
 
 class _SquareState extends State<Square>
   with SingleTickerProviderStateMixin {
-  final dbRef = FirebaseDatabase.instance.reference().child("profiles");
+  final dbRef = FirebaseDatabase.instance.reference().child("profiles").orderByChild("points");
   final tabList = ['Daily List', 'Weekly list'];
   var lists = [];
   TabController _tabController;
