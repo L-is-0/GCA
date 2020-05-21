@@ -49,7 +49,9 @@ class Login extends StatefulWidget{
       if(result!=null){
         user = result.user;
        _addUserTodb(user.uid, user.email);
-       return user.uid;
+        return  Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyHome()
+        ));
       }else{
       return errorMessage;
       }

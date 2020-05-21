@@ -12,6 +12,7 @@ import 'package:gca_app/pages/settings.dart';
 import 'package:gca_app/pages/sorting.dart';
 import 'package:gca_app/pages/square.dart';
 import 'package:gca_app/pages/tips.dart';
+import 'package:gca_app/pages/profile.dart';
 import 'package:getflutter/getflutter.dart';
 
 void main() => runApp(MyApp());
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         Tips.id:(context) => Tips(),
         Square.id:(context) => Square(),
         Setting.id:(context) => Setting(),
+        Profile.id:(context) => Profile()
       },
     );
   }
@@ -117,7 +119,7 @@ class MyHome extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/square'),
+                        onTap: () => Navigator.pushNamed(context, '/login'),
                         child: Container(
                           color: Colors.orange,
 //                          padding: const EdgeInsets.all(30),
@@ -132,7 +134,7 @@ class MyHome extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/login'),
+                        onTap: () => Navigator.pushNamed(context, '/profile'),
                         child: Container(
                           color: Colors.grey[700],
 //                          padding: const EdgeInsets.all(30),
