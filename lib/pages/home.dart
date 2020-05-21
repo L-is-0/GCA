@@ -6,7 +6,6 @@ import 'package:gca_app/pages/settings.dart';
 import 'package:gca_app/pages/sorting.dart';
 import 'package:gca_app/pages/square.dart';
 import 'package:gca_app/pages/tips.dart';
-import 'package:getflutter/components/drawer/gf_drawer.dart';
 
 class Home extends StatefulWidget{
   static const String id = "/home";
