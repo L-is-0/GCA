@@ -36,6 +36,7 @@ class _SortingState extends State<Sorting>{
   String username= "Peter";
   String uid;
   String email = "peter@gcp.com";
+  String recyclableText = "recyclable";
   final dbRef = FirebaseDatabase.instance.reference().child("profiles");
 
   Map<String, List<String>> labels = {
@@ -83,6 +84,7 @@ class _SortingState extends State<Sorting>{
           title: "Success",
           description: "Here is the predicted garbage type",
           buttonText: "okay",
+          recyclableText: recyclableText,
           image: _image,
           recognitions: _recognitions,
         )
@@ -215,6 +217,12 @@ class _SortingState extends State<Sorting>{
 
     var label = currentLabels[max_i].label;
     var cog = currentLabels[max_i].confidence;
+
+    if(label == "glass" ){
+      setState(() {
+        recyclableText = "not recyclable";
+      });
+    }
 
     if (label != null){
       setState(() {

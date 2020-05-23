@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {
-  final String title, description, buttonText;
+  final String title, description, buttonText, recyclableText;
   final File image;
   final List recognitions;
 
@@ -11,6 +11,7 @@ class CustomDialog extends StatelessWidget {
     @required this.description,
     @required this.buttonText,
     this.image,
+    this.recyclableText,
     this.recognitions,
   });
 
@@ -80,6 +81,17 @@ class CustomDialog extends StatelessWidget {
                   : [],
             ),
           ),
+        Container(
+          child:Text(
+                "The garbage is $recyclableText !",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w700,
+                  background: Paint()..color = Colors.white,
+                ),
+          ),
+        ),
           SizedBox(height: 24.0),
           Align(
             alignment: Alignment.bottomRight,
@@ -103,7 +115,7 @@ class CustomDialog extends StatelessWidget {
           left: Consts.padding,
           right: Consts.padding,
           child: CircleAvatar(
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.green,
             radius: Consts.avatarRadius,
           ),
         ),
