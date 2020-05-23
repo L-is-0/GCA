@@ -9,6 +9,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseUser user;
 String username= "Peter";
 String email = "peter@gcp.com";
+String uid;
 int point = 0;
 DataSnapshot dbSnapshot;
 
@@ -24,6 +25,7 @@ class MapScreenState extends State<Profile>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  final usernameController = TextEditingController();
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class MapScreenState extends State<Profile>
 
   Future getCurrentUser() async {
     user = await _auth.currentUser();
-    String uid = user.uid;
+    uid = user.uid;
 
     dbRef.orderByKey().equalTo(uid).once().then((DataSnapshot snapshot) {
       print('Connected to the database and read ${snapshot.value}');
@@ -187,9 +189,9 @@ class MapScreenState extends State<Profile>
                                       decoration: InputDecoration(
                                         hintText: username,
                                       ),
+                                      controller: usernameController,
                                       enabled: !_status,
                                       autofocus: !_status,
-
                                     ),
                                   ),
                                 ],
@@ -276,6 +278,7 @@ class MapScreenState extends State<Profile>
   void dispose() {
     // Clean up the controller when the Widget is disposed
     myFocusNode.dispose();
+    usernameController.dispose();
     super.dispose();
   }
 
@@ -299,6 +302,9 @@ class MapScreenState extends State<Profile>
                         _status = true;
                         FocusScope.of(context).requestFocus(new FocusNode());
                       });
+                      if(username != usernameController.text){
+                        updateDB(usernameController.text);
+                      }
                     },
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(20.0)),
@@ -348,5 +354,19 @@ class MapScreenState extends State<Profile>
         });
       },
     );
+  }
+
+  void updateDB(String updatedName) {
+    print("Updating DB with new username");
+    dbRef.child(uid).set({
+      "email": email,
+      "points": point,
+      "username" : updatedName
+    }).then((_) {
+      Scaffold.of(context).showSnackBar(
+          SnackBar(content: Text('Successfully Added')));
+    }).catchError((onError) {
+      print(onError);
+    });
   }
 }
